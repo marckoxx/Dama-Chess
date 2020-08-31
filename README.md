@@ -2,17 +2,26 @@
 A game of combined dama and chess made with python 3
 
 ====================Yahallo!====================
+
 Thanks for trying out dama-chess!
+
 This is my first project and also the first beta release of the game.
+
 So keep in mind the following before you start playing:
 
 
 
+
 What you can do:
+
 Chess moves (including en passant but not castling)
+
 Dama moves, but only forward (will add backward takes later)
+
 Clicking the piece and then clicking the end square (will add dragging later)
+
 Undo moves (default key is 'z')
+
 Reset game (default key is 'r')
 Quit game (default key is 'Esc')
 
