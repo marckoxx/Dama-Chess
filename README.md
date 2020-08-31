@@ -1,7 +1,7 @@
 # Dama-Chess
 ### A game of combined dama and chess with a twist made with python
 
-========================================Yahallo!========================================
+===================================Yahallo!===================================
 
 **Thanks for trying out dama-chess!**
 
