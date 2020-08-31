@@ -104,8 +104,8 @@ When reporting a bug, please state what happened **AND** how did you arrive to t
 
 
 
-**Oh and btw pls don't spread this without permission.** </br>
-I haven't licensed this under anything yet so, ya know, nobody wants their stuff to be stolen right? (with a few exceptions but definitely not me even if I'll open source this)
+**Oh and btw if you're planning to use or spread this,** </br>
+Please refer to the Apache [License](./License)
 
 
 ***nothing follows***
