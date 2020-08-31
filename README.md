@@ -105,7 +105,7 @@ When reporting a bug, please state what happened **AND** how did you arrive to t
 
 
 **Oh and btw if you're planning to use or spread this,** </br>
-Please refer to the Apache [License](./License)
+Please refer to the Apache [License](./LICENSE)
 
 
 ***nothing follows***
