@@ -1,6 +1,6 @@
 # Dama-Chess
 ### A game of combined Dama and Chess with a twist made with Python 3
-
+[**Download it here**](https://github.com/marckoxx/Dama-Chess/releases/download/1.0-beta/Dama-Chess.Beta.v1.0.zip) 
 
 This is my first project and also the first beta release of the game.
 
