@@ -21,9 +21,6 @@ def main():
     screen = pygame.display.set_mode((Width, Height))
     screen.fill(pygame.Color("black"))
     clock = pygame.time.Clock()
-    pygame.mixer_music.load('Audio/[HD] Passionate Duelist Theme - Yu-Gi-Oh! [Extended].mp3')
-    pygame.mixer_music.set_volume(0)
-    pygame.mixer_music.play(loops=-1)
     gs = Engine.GameState()
     valid_moves = gs.get_valid_moves()
     move_made = False
