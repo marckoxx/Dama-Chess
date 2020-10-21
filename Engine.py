@@ -15,7 +15,7 @@ class GameState:
             ["wP", "--", "wP", "--", "wP", "--", "wP", "--"],
             ["--", "wP", "--", "wP", "--", "wP", "--", "wP"],
             ["wR", "--", "wN", "--", "wN", "--", "wR", "--"]]
-        # the move_functions is a dictionary and it removes clutter in get_all_possible_moves
+        # the move_functions is a dictionary and it removes clutter in the function get_all_possible_moves
         self.move_functions = {"P": self.get_pawn_moves, "N": self.get_knight_moves, "B": self.get_bishop_moves,
                                "R": self.get_rook_moves, "Q": self.get_queen_moves, "K": self.get_king_moves}
         # it's set to True since white always goes first.
@@ -25,6 +25,7 @@ class GameState:
         self.move_log = []
         # start locations of the kings. The values will be changed to keep track of the king.
         # the king is tracked so that a possible pin/check is checked all the time.
+        # the values are negative since the king is initially not present.
         self.white_king_location = (-12, -11)
         self.black_king_location = (-12, -11)
         # I don't need to explain these.
@@ -38,15 +39,21 @@ class GameState:
         self.en_passant_possible = ()
         # the square of the eaten enemy piece
         self.dama_take_possible = []
+        # tracks how many pawns are promoted
         self.white_dama_count = []
         self.black_dama_count = []
+        # checks if you already have a promoted piece
         self.first_white_dama = False
         self.first_black_dama = False
+        # tracks when in the move_log is the enemy king added for easier undo function
         self.white_king_start = []
         self.black_king_start = []
+        # tracks where the pawn is converted into a king. Same reason as above
         self.white_pawn_conv = []
         self.black_pawn_conv = []
+        # lists the locations for all enemy pawns
         self.enemy_pawns = []
+        # the list of valid coordinates used in the user input function
         self.pos = ['0', '1', '2', '3', '4', '5', '6', '7']
 
     # handles the main info when you make a move
@@ -82,7 +89,6 @@ class GameState:
             move.is_dama_take = True
             self.dama_take_possible = []
             self.board[((move.start_row + move.end_row) // 2)][((move.start_col + move.end_col) // 2)] = "--"
-
         # to create pawn promotion prompt
         if move.is_pawn_promotion:
             white_dama_type = len(self.white_dama_count) % 2
@@ -93,11 +99,11 @@ class GameState:
                 if len(self.white_dama_count) != 0 and white_dama_type == 0:
                     self.board[move.end_row][move.end_col] = move.piece_moved[0] + 'B'
                     self.white_dama_count.append((move.end_row, move.end_col))
-                # to summon any piece except a bishop
+                # to summon any piece except a bishop and a pawn
                 if len(self.white_dama_count) != 0 and white_dama_type == 1:
                     while True:
                         promoted_piece = input("Select a piece except a Bishop and a Pawn [K, Q, R, N]:")
-                        if promoted_piece != 'B':
+                        if promoted_piece != 'B' or 'P':
                             self.board[move.end_row][move.end_col] = move.piece_moved[0] + promoted_piece
                             self.white_dama_count.append((move.end_row, move.end_col))
                             if promoted_piece in possible_promotions:
@@ -109,13 +115,14 @@ class GameState:
                     self.board[move.end_row][move.end_col] = move.piece_moved[0] + 'Q'
                     self.white_dama_count.append((move.end_row, move.end_col))
                     while True:
+                        print('')
+                        print("The enemy's pawn locations are:")
                         print(self.enemy_pawns)
                         selected_king_row = input('Please select the row of the pawn:')
                         if selected_king_row in self.pos:
                             selected_king_col = input('Please select the column of the pawn:')
                             if selected_king_col in self.pos:
                                 selected_king = (int(selected_king_row), int(selected_king_col))
-                                print(selected_king)
                                 if selected_king in self.enemy_pawns:
                                     self.board[selected_king[0]][selected_king[1]] = 'bK'
                                     self.black_king_location = (selected_king[0], selected_king[1])
@@ -133,7 +140,7 @@ class GameState:
                 if len(self.black_dama_count) != 0 and black_dama_type == 1:
                     while True:
                         promoted_piece = input("Select a piece except a Bishop and a Pawn [K, Q, R, N]:")
-                        if promoted_piece != 'B':
+                        if promoted_piece != 'B' or 'P':
                             self.board[move.end_row][move.end_col] = move.piece_moved[0] + promoted_piece
                             self.black_dama_count.append((move.end_row, move.end_col))
                             if promoted_piece in possible_promotions:
@@ -144,13 +151,14 @@ class GameState:
                     self.board[move.end_row][move.end_col] = move.piece_moved[0] + 'Q'
                     self.black_dama_count.append((move.end_row, move.end_col))
                     while True:
+                        print('')
+                        print("The enemy's pawn locations are:")
                         print(self.enemy_pawns)
                         selected_king_row = input('Please select the row of the pawn:')
                         if selected_king_row in self.pos:
                             selected_king_col = input('Please select the column of the pawn:')
                             if selected_king_col in self.pos:
                                 selected_king = (int(selected_king_row), int(selected_king_col))
-                                print(selected_king)
                                 if selected_king in self.enemy_pawns:
                                     self.board[selected_king[0]][selected_king[1]] = 'wK'
                                     self.white_king_location = (selected_king[0], selected_king[1])
@@ -185,13 +193,14 @@ class GameState:
                     abs(move.start_row - move.end_row) == 2 and \
                     abs(move.start_col - move.end_col) == 0:
                 self.en_passant_possible = ()
+            # to undo a dama take
             if move.is_dama_take:
                 move.is_dama_take = False
                 self.board[move.end_row][move.end_col] = "--"
                 self.dama_take_possible.append((move.end_row, move.end_col))
                 self.board[((move.start_row + move.end_row) // 2)][
                     ((move.start_col + move.end_col) // 2)] = move.dama_piece_taken
-            # to undo a dama
+            # to undo a dama/pawn promotion
             if move.is_pawn_promotion:
                 if self.white_to_move:
                     move.is_pawn_promotion = False

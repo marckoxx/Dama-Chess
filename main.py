@@ -1,8 +1,7 @@
 import pygame
-import sys
 import Engine
+import warnings
 
-sys.path.append('Images')
 pygame.init()
 
 Width = Height = 512
@@ -22,11 +21,22 @@ def main():
     screen = pygame.display.set_mode((Width, Height))
     screen.fill(pygame.Color("black"))
     clock = pygame.time.Clock()
+    pygame.mixer_music.load('Audio/[HD] Passionate Duelist Theme - Yu-Gi-Oh! [Extended].mp3')
+    pygame.mixer_music.set_volume(0)
+    pygame.mixer_music.play(loops=-1)
     gs = Engine.GameState()
     valid_moves = gs.get_valid_moves()
     move_made = False
     animate = False
-    print(gs.board)
+    print('')
+    print('Welcome to Dama-Chess!')
+    print('')
+    print('Please do not close or minimize this terminal as you will need to use this later.')
+    print('')
+    print('Press "Z" to undo a move')
+    print('Press "R" to reset the game')
+    print('Press "Esc" to quit the game')
+    print('')
     load_images()
     sq_selected = ()
     player_clicks = []
@@ -85,6 +95,8 @@ def main():
             if animate:
                 animate_move(gs.move_log[-1], screen, gs.board, clock)
             valid_moves = gs.get_valid_moves()
+            if gs.first_white_dama or gs.first_black_dama:
+                highlight_enemy_pawns(screen, gs)
             move_made = False
             animate = False
 
@@ -115,6 +127,18 @@ def highlight_squares(screen, gs, valid_moves, sq_selected):
             for move in valid_moves:
                 if move.start_row == r and move.start_col == c:
                     screen.blit(s, (move.end_col * sq_size, move.end_row * sq_size))
+
+
+# this is not fucking working idk why fml
+def highlight_enemy_pawns(screen, gs):
+
+    if len(gs.enemy_pawns) != 0:
+        r, c = gs.enemy_pawns[0], gs.enemy_pawns[1]
+        if gs.board[r][c][0] == ('b' if gs.white_to_move else 'w'):
+            e = pygame.Surface(sq_size, sq_size)
+            e.set_alpha(100)
+            e.fill(pygame.Color('red'))
+            screen.blit(e, (c * sq_size), (r * sq_size))
 
 
 def draw_game_state(screen, gs, valid_moves, sq_selected):
@@ -161,6 +185,7 @@ def animate_move(move, screen, board, clock):
         pygame.draw.rect(screen, color, end_square)
         if move.piece_captured != '--':
             screen.blit(Images[move.piece_captured], end_square)
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
         screen.blit(Images[move.piece_moved], pygame.Rect(c * sq_size, r * sq_size, sq_size, sq_size))
         pygame.display.flip()
         clock.tick(60)
@@ -176,10 +201,6 @@ def draw_text(screen, text):
     b.fill(pygame.Color('black'))
     screen.blit(b, (0, 0))
     screen.blit(text_object, text_location)
-
-
-#def draw_piece_selection:
- #   pass
 
 
 if __name__ == "__main__":
