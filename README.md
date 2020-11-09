@@ -1,4 +1,5 @@
 # Dama-Chess
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ### A game of combined Dama and Chess with a twist made with Python 3
 [**Download it here**](https://github.com/marckoxx/Dama-Chess/releases/download/1.0-beta/Dama-Chess.Beta.v1.0.zip) 
 
@@ -104,5 +105,3 @@ When reporting a bug, please state what happened **AND** how did you arrive to t
 **Oh and btw if you're planning to use or spread this,** </br>
 Please refer to the Apache [License](./LICENSE)
 
-
-***nothing follows***
