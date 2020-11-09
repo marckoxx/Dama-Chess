@@ -1,7 +1,7 @@
 # Dama-Chess
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ### A game of combined Dama and Chess with a twist made with Python 3
-[**Download it here**](https://github.com/marckoxx/Dama-Chess/releases/download/1.0-beta/Dama-Chess.Beta.v1.0.zip) 
+[**Download it here**](hhttps://github.com/marckoxx/Dama-Chess/releases/download/0.1-alpha/Dama-Chess.Alpha.v0.1.zip) 
 
 This is my first project and also the first beta release of the game.
 
